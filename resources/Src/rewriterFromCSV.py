@@ -77,7 +77,6 @@ class RewriterFromCSV(object):
             if self.__debug:
                 print("\nAverage :", self.__average)
 
-
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: python rewriterFromCSV.py <vocfile> <dataFile>")
