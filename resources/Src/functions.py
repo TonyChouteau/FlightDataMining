@@ -33,27 +33,41 @@ def assoc(rw, v1, v2, debug=True):
     return result
 
 
-def d(v1, v2, voc):
-    v1 = list(v1.keys())[0].split(".")[1]
-    modnames = voc.partitions[v2.split(".")[0]].modnames
+def d(partition_average, v1, v2):
 
-    v2 = v2.split(".")[1]
-    result = abs(modnames.index(v1) - modnames.index(v2))
+    id1 = partition_average.index(v1)
+    id2 = partition_average.index(v2)
 
-    print(result)
+    return (abs(id1 - id2) + 1)/len(partition_average)
 
 
-def atypical(rw, v1, v2, voc, debug=False):
+def atypical(rw, v1, v2, debug=False):
     rw.set_debug(False)
 
     rw.reset_filter()
-    rw_average = rw.average()
-
     rw.set_filter(v1)
     rw.filter()
     rw_v_average = rw.average()
 
-    result = d(v1, v2, voc)
+    partition_average = {key: rw_v_average[key] for key in rw_v_average.keys() if key.startswith(v2.split(".")[0])}
+
+    results = []
+    keys = []
+    for i in partition_average.keys():
+        if i != v2:
+            dist = d(list(partition_average.keys()), v2, i)
+            covVR = partition_average[i]
+            covv2R = 1 - partition_average[v2]
+            print(dist, covVR, covv2R, min(dist, covVR, covv2R))
+            results.append(min(dist, covVR, covv2R))
+            keys.append(i)
+
+    print(results)
+    m = max(results)
+    index = results.index(m)
+    print(m, keys[index])
+    return m
+    # result = d(v1, v2, voc)
     # u \in R (SEUELEMNT LA PARTITION)
 
 
@@ -102,14 +116,13 @@ def q3_assoc(rw):
     assoc(rw, filter, filter2)
 
 
-def q3_atypical(rw, voc):
+def q3_atypical(rw):
 
     # This filter must contain only one criterion
     filter = {
-        "DepTime.midday": 0.1
+        "Distance.long": 0.8
     }
 
-    # This filter must contain only one criterion
-    filter2 = "DepTime.morning"
+    filter2 = "Month.summer"
 
-    atypical(rw, filter, filter2, voc)
+    atypical(rw, filter, filter2)
