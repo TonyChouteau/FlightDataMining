@@ -6,6 +6,8 @@ from vocabulary import *
 import collections, functools, operator
 from collections import OrderedDict
 
+import functions as f
+
 
 class RewriterFromCSV(object):
     def __init__(self, voc: Vocabulary, df: str, debug=False):
@@ -23,8 +25,11 @@ class RewriterFromCSV(object):
         self.count = 0
 
         self.__average = None
-        self.__old_flights = []
+        self.__old_flights = self.flights
         self.__filter = {}
+
+    def set_debug(self, debug):
+        self.__debug = debug
 
     def readAndRewrite(self):
         """
@@ -61,21 +66,28 @@ class RewriterFromCSV(object):
                 check = False
         return check
 
+    def reset_filter(self):
+        self.flights = self.__old_flights
+
     def filter(self):
         self.__old_flights = self.flights
         self.flights = [flight for flight in self.flights if self.__check_filter(flight)]
         if self.__debug:
             print(len(self.__old_flights), len(self.flights))
 
-    def average(self):
-        if len(self.flights) > 0:
+    def average(self, normalized=True):
+        size = len(self.flights)
+        if size > 0:
             self.__average = OrderedDict(self.flights[0])
             self.count = len(self.flights)
             avg = dict(functools.reduce(operator.add, map(collections.Counter, self.flights)))
             for a in avg.keys():
-                self.__average[a] = avg[a]
+                self.__average[a] = round(avg[a] / (size if normalized else 1), 3)
+
             if self.__debug:
                 print("\nAverage :", self.__average)
+
+            return self.__average
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
@@ -87,14 +99,7 @@ if __name__ == "__main__":
                 rw: RewriterFromCSV = RewriterFromCSV(voc, sys.argv[2], debug=True)
                 rw.readAndRewrite()
 
-                filter = {
-                    "Month.summer": 1
-                }
-
-                rw.set_filter(filter)
-                rw.filter()
-
-                rw.average()
+                f.q3_atypical(rw, voc)
             else:
                 print(f"Data file {sys.argv[1]} not found")
         else:

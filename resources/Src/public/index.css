@@ -1,0 +1,177 @@
+html, body {
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+
+    margin: 0;
+    padding: 0;
+
+    user-select: none;
+}
+
+/*
+    Utils
+ */
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: row;
+}
+
+.flex-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+}
+
+.hidden {
+    display: none;
+}
+
+/*
+    Header
+ */
+
+.header {
+    width: 100%;
+    height: 70px;
+
+    background: cornflowerblue;
+}
+
+.header .nav {
+    height: 100%;
+}
+
+.nav .nav_link {
+    width: 100px;
+    height: 100%;
+
+    padding: 0 20px;
+
+    font-family: serif;
+    font-size: 20px;
+    color: white;
+
+    border-right: 1px solid #7aa6f6;
+    border-left: 1px solid #7aa6f6;
+
+    cursor: pointer;
+}
+
+.nav .nav_link:hover {
+    background: #70a0f8;
+}
+.nav .nav_link.active {
+    background: #7aa6f6;
+}
+
+/*
+    Content
+ */
+
+.content {
+    width: 100%;
+    height: calc(100% - 100px);
+
+    background: aliceblue;
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
+}
+
+.page:not(.active) {
+    display: none;
+}
+
+/*
+    Footer
+ */
+
+.footer {
+    width: 100%;
+    height: 30px;
+
+    background: darkslateblue;
+}
+
+.footer .version {
+    font-family: serif;
+    font-weight: lighter;
+    font-size: 17px;
+    color: white;
+}
+
+/*
+    Pages
+ */
+
+.title {
+    font-family: serif;
+    font-weight: lighter;
+    font-size: 30px;
+
+    padding: 30px;
+}
+
+.sub_title {
+    font-family: serif;
+    font-weight: lighter;
+    font-size: 25px;
+
+    padding: 10px;
+}
+
+.container {
+    width: 100%;
+
+    padding: 20px 0;
+}
+
+.average {
+    flex-wrap: wrap;
+}
+
+select,
+.range_container {
+    min-width: 200px;
+}
+
+select,
+.range_container,
+.refresh {
+
+    margin: 0 10px;
+    padding: 10px 20px;
+
+    border: 1px solid #7bbdff;
+    border-radius: 5px;
+
+    font-family: serif;
+    font-weight: lighter;
+    font-size: 17px;
+}
+
+.refresh {
+    cursor: pointer;
+}
+
+.range_label {
+    margin-left: 10px;
+}
+
+canvas {
+    width: 200px;
+    height: 200px;
+}

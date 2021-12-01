@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+
+    <!-- Bootstrap -->
+    <link href="index.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Own -->
+    <script src="Filter.js"></script>
+    <script src="Display.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+    <div class="header flex">
+        <div class="nav flex">
+            <div class="nav_link flex active" data-page="home">Home</div>
+            <div class="nav_link flex" data-page="view">Visualization</div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="page active flex-column" data-page="home">
+            <div class="title">
+                FlightDataMining Project - Enssat 2021
+            </div>
+            <div class="sub_title hidden">
+                Links :
+            </div>
+        </div>
+        <div class="page" data-page="view">
+            <div class="container filters flex">
+                <select class="filter"></select>
+                <select class="sub_filter hidden"></select>
+                <div class="range_container flex hidden">
+                    <input class="range" type="range" id="range" min="0" max="1" value="0.5" step="0.1">
+                    <label class="range_label" for="range">Value : <span class="range_value">0.5</span></label>
+                </div>
+                <div class="refresh">Refresh</div>
+            </div>
+            <div class="container average flex"></div>
+            <div class="container datas flex-column">Datas</div>
+        </div>
+    </div>
+    <div class="footer flex">
+        <div class="version">FlightDataMining - 2021 - Chouteau/Martin</div>
+    </div>
+</body>
+</html>
