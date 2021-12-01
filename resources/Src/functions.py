@@ -1,6 +1,10 @@
+
+epsilon = 1e-15
+
 # =====================
 # Compute functions
 # =====================
+
 
 def dep(rw, v1, v2, debug=False):
     rw.set_debug(False)
@@ -12,7 +16,7 @@ def dep(rw, v1, v2, debug=False):
     rw.filter()
     rw_v_average = rw.average()
 
-    result = rw_v_average[v2] / rw_average[v2]
+    result = rw_v_average[v2] / max(rw_average[v2], epsilon) # Avoid div by 0
 
     if debug:
         print(rw_average)
@@ -95,34 +99,45 @@ def q2(rw):
 
 
 def q3_assoc(rw):
-    print("Low correlation")
+
+    print("High correlation")
     filter = {
-        "DepTime.midday": 0.1
+        "ArrDelay.early": 0.9
     }
 
     # This filter must contain only one criterion
-    filter2 = "DepDelay.short"
+    filter2 = "DepTime.morning"
 
     assoc(rw, filter, filter2)
 
-    print("\nHigh correlation")
+    print("\nLow correlation")
     filter = {
-        "AirTime.medium": 0.1
+        "ArrDelay.early": 0.9
     }
 
     # This filter must contain only one criterion
-    filter2 = "Distance.long"
+    filter2 = "AirTime.medium"
 
     assoc(rw, filter, filter2)
 
 
 def q3_atypical(rw):
 
+    print("Terme atypique")
     # This filter must contain only one criterion
     filter = {
-        "Distance.long": 0.8
+        "ArrDelay.early": 0.8
     }
 
-    filter2 = "Month.summer"
+    filter2 = "DepTime.evening"
+
+    atypical(rw, filter, filter2)
+
+    print("\nTerme peu atypique :")
+    filter = {
+        "ArrDelay.veryLong": 0.8
+    }
+
+    filter2 = "DepTime.evening"
 
     atypical(rw, filter, filter2)

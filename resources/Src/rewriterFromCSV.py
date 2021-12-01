@@ -99,10 +99,10 @@ if __name__ == "__main__":
                 rw: RewriterFromCSV = RewriterFromCSV(voc, sys.argv[2], debug=True)
                 rw.readAndRewrite()
 
-                # q1(rw)
-                # q2(rw)
-                # q3_assoc(rw)
-                f.q3_atypical(rw)
+                f.q1(rw)
+                f.q2(rw)
+                # f.q3_assoc(rw)
+                # f.q3_atypical(rw)
             else:
                 print(f"Data file {sys.argv[1]} not found")
         else:
