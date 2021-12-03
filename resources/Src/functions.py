@@ -16,7 +16,7 @@ def dep(rw, v1, v2, debug=False):
     rw.filter()
     rw_v_average = rw.average()
 
-    result = rw_v_average[v2] / max(rw_average[v2], epsilon) # Avoid div by 0
+    result = rw_v_average[v2] / max(rw_average[v2], epsilon)  # Avoid div by 0
 
     if debug:
         print(rw_average)

@@ -1,12 +1,17 @@
-function Filter() {
+function Filter(container) {
     this.configUrl = "/config";
 
-    this.$filter = $(".filter");
-    this.$subFilter = $(".sub_filter");
+    container = container || "body";
 
-    this.$rangeContainer = $(".range_container");
-    this.$range = $(".range");
-    this.$rangeLabel = $(".range_label");
+    this.$filter = $(".filter", container);
+    this.$subFilter = $(".sub_filter", container);
+
+    this.$rangeContainer = $(".range_container", container);
+    this.$range = $(".range", container);
+    this.$rangeLabel = $(".range_label", container);
+    this.$refresh = $(".refresh", container);
+
+    this.filterCallback = null;
 
     this.data = null;
 
@@ -47,13 +52,16 @@ Filter.prototype = {
         this.$filter.html(this.makeOptions());
         this.$filter.off();
         this.$filter.on("change click", e => {
-            const val = $(e.target).val();
-            if (val === "") {
-                this.$subFilter.hide();
-                this.$rangeContainer.hide();
+            const $f = $(e.target);
+            if (this.filterCallback) {
+                this.filterCallback(e);
+            }
+            if ($f.val() === "") {
+                $f.siblings(".range_container").hide();
+                $f.siblings(".sub_filter").hide();
             } else {
-                this.$rangeContainer.show();
-                this.$subFilter.html(this.makeSubOptions(val)).show();
+                $f.siblings(".range_container").show();
+                $f.siblings(".sub_filter").html(this.makeSubOptions($f.val())).show();
             }
         });
     },
@@ -66,6 +74,7 @@ Filter.prototype = {
     },
 
     getFilter: function() {
+
         if (this.$filter.val()) {
             return {
                 filter: this.$filter.val(),
@@ -74,5 +83,11 @@ Filter.prototype = {
             };
         }
         return null;
+    },
+
+    getParams: function(filters) {
+        return filters ? ("?" + Object.entries(filters).map(key_value =>
+            key_value[0] + "=" + key_value[1]).join("&")
+        ) : "";
     }
 };

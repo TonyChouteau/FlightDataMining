@@ -1,10 +1,9 @@
 function Display(filter) {
     this.dataUrl = "/data";
+    this.pageClass = ".view";
 
-    this.$refresh = $(".refresh");
+    this.$refresh = $(".refresh", this.pageClass);
     this.$average = $(".average");
-
-    this.colors = [];
 
     this.filter = filter;
 
@@ -16,20 +15,17 @@ Display.prototype = {
     init: function() {
         this.$refresh.on("click", () => {
             this.getData();
-        })
+        });
     },
 
     getData: function () {
-        const filters = this.filter.getFilter();
-        const params = filters ? ("?" + Object.entries(filters).map(key_value =>
-            key_value[0] + "=" + key_value[1]).join("&")
-        ) : "";
+        const params = this.filter.getParams(this.filter.getFilter());
         $.ajax({
-            url: this.dataUrl+params,
+            url: this.dataUrl + params,
             success: (res) => {
                 const data = res.data;
                 if (res.error) {
-                    alert("No flight for the selected filter");
+                    alert(res.error);
                     return;
                 } else {
                     this.data = {}
@@ -49,7 +45,7 @@ Display.prototype = {
         this.$average.html("");
         for (let i in this.data) {
             const $canvas = $("<canvas width='400' height='400'></canvas>");
-            $(".average").append($canvas);
+            this.$average.append($canvas);
             const config = {
                 type: 'doughnut',
                 data: {
@@ -58,13 +54,7 @@ Display.prototype = {
                         label: i,
                         data: Object.values(this.data[i]),
                         borderWidth: 1,
-                        backgroundColor: ("#00876c\n" +
-                            "#71ae80\n" +
-                            "#bad59e\n" +
-                            "#fffcc8\n" +
-                            "#f2c484\n" +
-                            "#e7865a\n" +
-                            "#d43d51").split("\n")
+                        backgroundColor: COLOR
                     }]
                 },
                 options: {
